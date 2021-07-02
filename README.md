@@ -29,6 +29,7 @@ a node-style callback. The config object must have at minimum an `http` or
 | `https.ca`               | Cert or array of certs specifying trusted authorities for peer certificates. Only required if your server accepts client certificate connections signed by authorities that are not trusted by default. See [Certificate normalization](#certificate-normalization) for more details. |
 | `https.sni`              | See [SNI Support](#sni-support).                                                                                                                                                                                                                                                      |
 | `https.handler`          | Handler for HTTPS requests. If you want to share a handler with all servers, use a top-level `handler` config property instead.                                                                                                                                                       |
+| `https.h2`               | Enable HTTP/2 while still supporting HTTPS on the same socket via [ALPN negotiation]. To use HTTP2-only, also specify `allowHTTP1: false`.                                                                                                                                            |
 | `https.*`                | Any other properties supported by [https.createServer](https://nodejs.org/dist/latest-v8.x/docs/api/https.html#https_https_createserver_options_requestlistener) can be added to the https object, except `secureProtocol` and `secureOptions` which are set to recommended values.   |
 
 If successful, the `create-servers` callback is passed an object with the
@@ -286,3 +287,4 @@ var servers = createServers(
 [article]: https://certsimple.com/blog/a-plus-node-js-ssl
 [iojs]: https://github.com/iojs/io.js
 [ciphers]: https://iojs.org/api/tls.html#tls_tls_createserver_options_secureconnectionlistener
+[ALPN negotiation]: https://nodejs.org/api/http2.html#http2_alpn_negotiation

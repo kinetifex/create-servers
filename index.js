@@ -349,8 +349,17 @@ async function createHttps(ssl, log) {
       finalHttpsOptions.SNICallback = getSNIHandler(ssl);
     }
 
+    if (ssl.h2) {
+      finalHttpsOptions.allowHTTP1 = 'allowHTTP1' in ssl ? ssl.allowHTTP1 : true;
+      delete finalHttpsOptions.h2;
+    }
+
     log('https | listening on %d', port);
-    server = https.createServer(finalHttpsOptions, ssl.handler);
+    if(ssl.h2) {
+      server = require('http2').createSecureServer(finalHttpsOptions, ssl.handler)
+    } else {
+      server = https.createServer(finalHttpsOptions, ssl.handler);
+    }
 
     if (typeof timeout === 'number') server.setTimeout(timeout);
     args = [server, port];
